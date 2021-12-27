@@ -3,13 +3,11 @@ package telran.b7a.myspringhibernate.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Period;
 
 @AllArgsConstructor
 @NoArgsConstructor

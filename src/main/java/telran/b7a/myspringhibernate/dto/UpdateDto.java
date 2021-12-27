@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgeDto {
-    Integer minAge;
-    Integer maxAge;
+public class UpdateDto {
+    String name;
 }

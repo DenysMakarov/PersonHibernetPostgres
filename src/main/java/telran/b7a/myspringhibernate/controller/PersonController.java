@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import telran.b7a.myspringhibernate.dto.AgeDto;
 import telran.b7a.myspringhibernate.dto.PersonDto;
+import telran.b7a.myspringhibernate.dto.UpdateDto;
 import telran.b7a.myspringhibernate.model.Address;
 import telran.b7a.myspringhibernate.service.PersonService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/person")
@@ -35,9 +34,9 @@ public class PersonController {
         return personService.removePerson(id);
     }
 
-    @PutMapping ("/person/{id}")
-    public PersonDto updatePerson(@PathVariable Integer id , @RequestBody String name){
-        return personService.updatePerson(id, name);
+    @PutMapping ("/{id}")
+    public PersonDto updatePerson(@PathVariable Integer id , @RequestBody UpdateDto updateDto){
+        return personService.updatePerson(id, updateDto.getName());
     }
 
     @PutMapping ("/address/{id}")
@@ -57,7 +56,7 @@ public class PersonController {
 
     @GetMapping  ("/age")
     public Iterable<PersonDto> findPersonBetweenAges(@RequestBody AgeDto ageDto){
-        return personService.findPersonBetweenAges(ageDto.getMin(), ageDto.getMax());
+        return personService.findPersonBetweenAges(ageDto.getMinAge(), ageDto.getMaxAge());
     }
 
 }

@@ -12,8 +12,6 @@ import telran.b7a.myspringhibernate.model.Address;
 import telran.b7a.myspringhibernate.model.Person;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -32,9 +30,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public boolean addPerson(PersonDto personDto) {
-        if (personRepository.existsById(personDto.getId())) {
-            return false;
-        }
+        if (personRepository.existsById(personDto.getId())) return false;
         personRepository.save(modelMapper.map(personDto, Person.class));
         return true;
     }
@@ -42,8 +38,6 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDto findPersonById(Integer id) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFondException::new);
-
-        System.out.println(Period.between(person.getBirthDate(), LocalDate.now()).getYears());
         return modelMapper.map(person, PersonDto.class);
     }
 
@@ -51,7 +45,6 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public PersonDto removePerson(Integer id) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFondException::new);
-        if (person == null) return null;
         personRepository.deleteById(id);
         return modelMapper.map(person, PersonDto.class);
     }
@@ -60,7 +53,6 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public PersonDto updatePerson(Integer id, String name) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFondException::new);
-        if (person == null) return null;
         person.setName(name);
         personRepository.save(person);
         return modelMapper.map(person, PersonDto.class);
@@ -70,7 +62,6 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public PersonDto updateAddress(Integer id, Address address) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFondException::new);
-        if (person == null) return null;
         person.setAddress(address);
         personRepository.save(person);
         return modelMapper.map(person, PersonDto.class);
@@ -87,18 +78,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public Iterable<PersonDto> findPersonBetweenAges(Integer minAge, Integer maxAge) {
-                return personRepository.findAllByBirthDateBetween(minAge, maxAge)
+        return personRepository.findAllByBirthDateBetween(LocalDate.now().minusYears(maxAge), LocalDate.now().minusYears(minAge))
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
     }
-
-//    @Override
-//    @Transactional
-//    public Iterable<PersonDto> findPersonBetweenAges(Integer minAge, Integer maxAge) {
-//        return personRepository.findAllByBirthDate(minAge, maxAge)
-//                .map(e -> modelMapper.map(e, PersonDto.class))
-//                .collect(Collectors.toList());
-//    }
 
     @Override
     @Transactional
