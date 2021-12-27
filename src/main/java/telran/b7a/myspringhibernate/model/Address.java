@@ -18,4 +18,5 @@ public class Address implements Serializable {
     String city;
     String street;
     int building;
+    String v;
 }
