@@ -2,6 +2,7 @@ package telran.b7a.myspringhibernate.service;
 
 import org.springframework.stereotype.Service;
 import telran.b7a.myspringhibernate.dto.AddressDto;
+import telran.b7a.myspringhibernate.dto.CityPopulationDto;
 import telran.b7a.myspringhibernate.dto.PersonDto;
 import telran.b7a.myspringhibernate.model.Address;
 import telran.b7a.myspringhibernate.model.Person;
@@ -18,5 +19,5 @@ public interface PersonService {
     Iterable<PersonDto> findPersonsByName(String name);
     Iterable<PersonDto> findPersonBetweenAges(Integer minAge, Integer maxAge);
     Iterable<PersonDto> findPersonByCities(String city);
-
+    Iterable<CityPopulationDto> getCityPopulation();
 }

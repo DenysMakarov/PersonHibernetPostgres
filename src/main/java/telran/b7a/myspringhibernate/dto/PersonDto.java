@@ -11,8 +11,6 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class PersonDto {
-//    String DateFormat = "[yyyy-MM-DD]";
-
     Integer id;
     String name;
     @JsonFormat(pattern = "yyyy-MM-dd")

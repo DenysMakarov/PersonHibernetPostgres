@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import telran.b7a.myspringhibernate.dao.PersonRepository;
-import telran.b7a.myspringhibernate.dto.AddressDto;
+import telran.b7a.myspringhibernate.dto.CityPopulationDto;
 import telran.b7a.myspringhibernate.dto.PersonDto;
 import telran.b7a.myspringhibernate.dto.PersonNotFondException;
 import telran.b7a.myspringhibernate.model.Address;
@@ -54,21 +54,21 @@ public class PersonServiceImpl implements PersonService {
     public PersonDto updatePerson(Integer id, String name) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFondException::new);
         person.setName(name);
-        personRepository.save(person);
+//        personRepository.save(person);
         return modelMapper.map(person, PersonDto.class);
     }
 
     @Override
-    @Transactional
+    @Transactional // так же используется save()
     public PersonDto updateAddress(Integer id, Address address) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFondException::new);
         person.setAddress(address);
-        personRepository.save(person);
+//        personRepository.save(person);
         return modelMapper.map(person, PersonDto.class);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true) // для того, что бы не блокировать путь для для остальных кто хочет также искать
     public Iterable<PersonDto> findPersonsByName(String name) {
         return personRepository.findAllByName(name)
                 .map(e -> modelMapper.map(e, PersonDto.class))
@@ -76,7 +76,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Iterable<PersonDto> findPersonBetweenAges(Integer minAge, Integer maxAge) {
         return personRepository.findAllByBirthDateBetween(LocalDate.now().minusYears(maxAge), LocalDate.now().minusYears(minAge))
                 .map(e -> modelMapper.map(e, PersonDto.class))
@@ -84,11 +84,16 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Iterable<PersonDto> findPersonByCities(String city) {
-        return personRepository.findAllByAddress_City(city)
+        return personRepository.findAllByAddressCity(city)
                 .map(e -> modelMapper.map(e, PersonDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Iterable<CityPopulationDto> getCityPopulation() {
+        return personRepository.getCityPopulation();
     }
 
 }

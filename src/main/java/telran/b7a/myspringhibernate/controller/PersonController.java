@@ -3,6 +3,7 @@ package telran.b7a.myspringhibernate.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import telran.b7a.myspringhibernate.dto.AgeDto;
+import telran.b7a.myspringhibernate.dto.CityPopulationDto;
 import telran.b7a.myspringhibernate.dto.PersonDto;
 import telran.b7a.myspringhibernate.dto.UpdateDto;
 import telran.b7a.myspringhibernate.model.Address;
@@ -57,6 +58,11 @@ public class PersonController {
     @GetMapping  ("/age")
     public Iterable<PersonDto> findPersonBetweenAges(@RequestBody AgeDto ageDto){
         return personService.findPersonBetweenAges(ageDto.getMinAge(), ageDto.getMaxAge());
+    }
+
+    @GetMapping("/population/city")
+    public Iterable<CityPopulationDto> getCityPopulation(){
+        return personService.getCityPopulation();
     }
 
 }
