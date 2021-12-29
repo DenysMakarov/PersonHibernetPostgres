@@ -1,8 +1,5 @@
 package telran.b7a.myspringhibernate.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -121,7 +118,25 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Iterable<CityPopulationDto> getCityPopulation() {
         return personRepository.getCityPopulation();
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<PersonDto> findEmployeeBySalary(int min, int max) {
+        return personRepository.findAllBySalary(min, max)
+                .map(e -> modelMapper.map(e, getDtoClass(e)))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Iterable<PersonDto> getChildren() {
+        return personRepository.findAllChild()
+                .map(e -> modelMapper.map(e, getDtoClass(e)))
+                .collect(Collectors.toList());
     }
 }

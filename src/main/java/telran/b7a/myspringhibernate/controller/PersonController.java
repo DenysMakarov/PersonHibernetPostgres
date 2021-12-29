@@ -3,10 +3,7 @@ package telran.b7a.myspringhibernate.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import telran.b7a.myspringhibernate.dto.AgeDto;
-import telran.b7a.myspringhibernate.dto.CityPopulationDto;
-import telran.b7a.myspringhibernate.dto.PersonDto;
-import telran.b7a.myspringhibernate.dto.UpdateDto;
+import telran.b7a.myspringhibernate.dto.*;
 import telran.b7a.myspringhibernate.model.Address;
 import telran.b7a.myspringhibernate.model.Child;
 import telran.b7a.myspringhibernate.service.PersonService;
@@ -26,20 +23,6 @@ public class PersonController {
     public boolean addPerson(@RequestBody PersonDto personDto){
         return personService.addPerson(personDto);
     }
-
-//    @PostMapping
-//    public boolean addPerson(@RequestBody Object personDto) throws NoSuchFieldException, JsonProcessingException {
-//        personService.addPersonTest(personDto);
-//        return "Ok";
-//    }
-//    @PostMapping
-//    public Object addPerson(@RequestBody Object personDto) throws JsonProcessingException {
-//        return personService.addPersonTest(personDto);
-//    }
-//    @PostMapping
-//    public Child addPerson(@RequestBody Child personDto){
-//        return personService.addPersonTest(personDto);
-//    }
 
     @GetMapping("/{id}")
     public PersonDto findPerson(@PathVariable Integer id){
@@ -81,5 +64,14 @@ public class PersonController {
         return personService.getCityPopulation();
     }
 
+    @GetMapping("/salary")
+    public Iterable<PersonDto> getAllBySalary(@RequestBody SalaryDto salaryDto){
+        return personService.findEmployeeBySalary(salaryDto.getMin(), salaryDto.getMax());
+    }
+
+    @GetMapping("/children")
+    public Iterable<PersonDto> getAllChildren(){
+        return personService.getChildren();
+    }
 }
 

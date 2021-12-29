@@ -23,4 +23,13 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
 
     @Query("select new telran.b7a.myspringhibernate.dto.CityPopulationDto(p.address.city, count(p)) from Person p group by p.address.city order by count(p) desc")
     List<CityPopulationDto> getCityPopulation();
+
+    @Query("select p from Employee p where p.salary > ?1 and p.salary < ?2")
+    Stream<Person> findAllBySalary(@Param("min") int min, @Param("max") int max);
+
+    @Query("select p from Child p")
+    Stream<Person> findAllChild();
+
+//    Stream<Person> findByKindergartenNotNull();
+
 }
